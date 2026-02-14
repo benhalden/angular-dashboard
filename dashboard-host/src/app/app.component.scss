@@ -1,13 +1,16 @@
 :host {
 	display: block;
+	min-height: 100vh;
 }
 
 .app-shell {
-	max-width: 980px;
+	width: min(96vw, 1800px);
 	margin: 0 auto;
 	padding: 1.25rem;
 	display: grid;
+	grid-template-rows: auto auto 1fr;
 	gap: 1rem;
+	min-height: 100vh;
 }
 
 h1,

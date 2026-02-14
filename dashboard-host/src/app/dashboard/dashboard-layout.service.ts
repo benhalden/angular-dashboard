@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { DashboardWidgetLayoutItem } from './dashboard-widget';
 
 export interface DashboardLayout {
-  widgetIds: string[];
+  widgets: DashboardWidgetLayoutItem[];
 }
 
 @Injectable({
@@ -18,12 +19,42 @@ export class DashboardLayoutService {
 
     try {
       const parsed = JSON.parse(raw) as Partial<DashboardLayout>;
-      if (!Array.isArray(parsed.widgetIds)) {
-        return null;
+
+      if (Array.isArray(parsed.widgets)) {
+        const widgets = parsed.widgets
+          .filter((item): item is DashboardWidgetLayoutItem => {
+            return !!item && typeof item.id === 'string' && typeof item.size === 'string';
+          })
+          .map((item) => {
+            const layoutItem: DashboardWidgetLayoutItem = {
+              id: item.id,
+              size: item.size
+            };
+
+            if (typeof item.column === 'number' && item.column >= 1) {
+              layoutItem.column = item.column;
+            }
+
+            if (typeof item.row === 'number' && item.row >= 1) {
+              layoutItem.row = item.row;
+            }
+
+            return layoutItem;
+          });
+
+        return { widgets };
       }
 
-      const widgetIds = parsed.widgetIds.filter((id): id is string => typeof id === 'string');
-      return { widgetIds };
+      if (Array.isArray((parsed as { widgetIds?: unknown[] }).widgetIds)) {
+        const widgetIds = (parsed as { widgetIds?: unknown[] }).widgetIds ?? [];
+        const widgets = widgetIds
+          .filter((id): id is string => typeof id === 'string')
+          .map((id) => ({ id, size: '2x2' as const }));
+
+        return { widgets };
+      }
+
+      return null;
     } catch {
       return null;
     }
