@@ -1,9 +1,5 @@
-import { Component } from '@angular/core';
-import { DashboardComponent, DashboardWidgetDefinition } from './dashboard/public-api';
-import { ActivityWidgetComponent } from './dashboard/widgets/activity-widget.component';
-import { SummaryWidgetComponent } from './dashboard/widgets/summary-widget.component';
-import { TodoWidgetComponent } from './dashboard/widgets/todo-widget.component';
-import { Widget1Component } from './dashboard/widgets/widget-1/widget-1.component';
+import { Component, inject } from '@angular/core';
+import { DashboardComponent, DashboardWidgetDefinitionsService } from './dashboard/public-api';
 
 @Component({
   selector: 'app-root',
@@ -12,36 +8,8 @@ import { Widget1Component } from './dashboard/widgets/widget-1/widget-1.componen
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  protected readonly widgetDefinitions: DashboardWidgetDefinition[] = [
-    {
-      id: 'summary',
-      title: 'Summary',
-      component: SummaryWidgetComponent,
-      defaultSize: '2x1',
-      allowedSizes: ['1x1', '2x1', '2x2']
-    },
-    {
-      id: 'activity',
-      title: 'Recent Activity',
-      component: ActivityWidgetComponent,
-      defaultSize: '3x2',
-      allowedSizes: ['2x2', '3x2', '4x3']
-    },
-    {
-      id: 'todo',
-      title: 'To-Do',
-      component: TodoWidgetComponent,
-      defaultSize: '2x2',
-      allowedSizes: ['1x1', '2x2', '3x2']
-    },
-    {
-      id: 'widget-1',
-      title: 'Widget 1',
-      component: Widget1Component,
-      defaultSize: '4x3',
-      allowedSizes: ['4x3']
-    }
-  ];
+  private readonly widgetDefinitionsService = inject(DashboardWidgetDefinitionsService);
 
-  protected readonly initialWidgetIds = ['summary', 'activity'];
+  protected readonly widgetDefinitions = this.widgetDefinitionsService.widgetDefinitions;
+  protected readonly initialWidgetIds = this.widgetDefinitionsService.initialWidgetIds;
 }

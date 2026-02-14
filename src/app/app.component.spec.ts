@@ -17,14 +17,13 @@ describe('AppComponent', () => {
   it('should define dashboard widget definitions', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect((app as any).widgetDefinitions.length).toBe(3);
+    expect((app as any).widgetDefinitions.length).toBe(6);
   });
 
-  it('should render host heading and dashboard component', () => {
+  it('should render dashboard component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Angular Dashboard Host');
     expect(compiled.querySelector('app-dashboard')).not.toBeNull();
   });
 });

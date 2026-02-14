@@ -1,1 +1,68 @@
 /* You can add global styles to this file, and also import other style files */
+/*@import "bootstrap-icons/font/bootstrap-icons.css";*/
+* {
+    font-size: 100%;
+    font-family: Calibri;
+   }
+
+a {
+    color:blue;
+    text-decoration: underline;
+}   
+
+.detail-container {
+    width: 80vw;
+}
+
+.landing-page-title {
+  color: darkgrey;
+  font-weight: bold;
+}
+
+.detail-main-card-title {
+  color: darkgrey;
+  font-weight: bold;
+}
+
+.abcc-form-row {
+    padding-bottom: 5px;
+    align-items: left;
+}
+
+.col-form-label {
+  min-width: fit-content;
+}
+
+.page-link {
+    cursor: pointer;
+}
+
+/* Table sortation  */
+th.sortable {
+    cursor: pointer;
+    position: relative;
+  }
+  
+th.sortable::after {
+    content: '▲▼';  /* Add a simple arrow or custom icon */
+    /*position:absolute;
+    right: 20px;*/
+    font-size: 0.75em;
+    color: lightgray;
+  }
+    
+  th.sorted {
+    background-color: #e0e0e0;
+    font-weight: bold;
+  }  
+  
+  th.sorted.ascending::after {
+    content: '▲'; 
+    color:gray;
+  }
+  
+  th.sorted:not(.ascending)::after {
+    content: '▼'; 
+    color:gray;
+  }
+  /* END Table sortation  *//* You can add global styles to this file, and also import other style files */
