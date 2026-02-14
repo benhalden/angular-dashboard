@@ -1,0 +1,33 @@
+<section class="dashboard">
+  <h2>Customisable Dashboard</h2>
+
+  <div class="dashboard-controls">
+    <label for="widget-select">Add widget</label>
+    <select id="widget-select" [(ngModel)]="selectedWidgetId">
+      <option value="">Choose a widget...</option>
+      @for (widget of availableWidgets(); track widget.id) {
+        <option [value]="widget.id">{{ widget.title }}</option>
+      }
+    </select>
+    <button type="button" (click)="addSelectedWidget()" [disabled]="!selectedWidgetId">Add</button>
+  </div>
+
+  <div
+    cdkDropList
+    class="dashboard-grid"
+    [cdkDropListData]="displayedWidgets()"
+    (cdkDropListDropped)="drop($event)"
+  >
+    @for (widget of displayedWidgets(); track trackByWidgetId($index, widget)) {
+      <article class="widget-card" cdkDrag>
+        <header>
+          <h3>{{ widget.title }}</h3>
+          <button type="button" (click)="removeWidget(widget.id)">Remove</button>
+        </header>
+        <ng-container *ngComponentOutlet="widget.component"></ng-container>
+      </article>
+    } @empty {
+      <p class="empty-state">No widgets selected. Add one from the list above.</p>
+    }
+  </div>
+</section>

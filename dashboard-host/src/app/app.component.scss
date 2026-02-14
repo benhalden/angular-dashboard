@@ -1,0 +1,16 @@
+:host {
+	display: block;
+}
+
+.app-shell {
+	max-width: 980px;
+	margin: 0 auto;
+	padding: 1.25rem;
+	display: grid;
+	gap: 1rem;
+}
+
+h1,
+p {
+	margin: 0;
+}
