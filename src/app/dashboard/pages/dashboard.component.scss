@@ -93,32 +93,55 @@ button {
 }
 
 .widget-card {
+  position: relative;
+  
+  border-radius: 8px;
+  background: #fff;
+  
+  display: grid;
+  gap: 0.75rem;
+  cursor: default;
+}
+
+.widget-menu-container {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 4;
+}
+
+.widget-menu-trigger {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  border: 1px solid #d5d5d5;
+  background: #fff;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.widget-edit-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  min-width: 12rem;
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.5rem;
   border: 1px solid #d5d5d5;
   border-radius: 8px;
   background: #fff;
-  padding: 0.75rem;
-  display: grid;
-  gap: 0.75rem;
-  cursor: move;
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.12);
 }
 
-.widget-card > header {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  align-items: flex-start;
-}
-
-.widget-edit-tools {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.widget-edit-tools label {
+.widget-edit-menu label {
   font-size: 0.8rem;
+}
+
+/* Only show move cursor when the grid is in edit mode */
+.dashboard-grid.edit-mode .widget-card {
+  cursor: move;
 }
 
 h3 {

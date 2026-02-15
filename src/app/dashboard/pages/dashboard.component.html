@@ -62,29 +62,41 @@
         [style.grid-row-start]="widget.row"
         [style.grid-row-end]="'span ' + gridRowSpan(widget.size)"
       >
-        <header>
-          <h3>{{ widget.title }}</h3>
-          @if (isEditMode) {
-            <div class="widget-edit-tools">
-              <label [attr.for]="'size-' + widget.id">Size</label>
-              <select
-                [id]="'size-' + widget.id"
-                [ngModel]="widget.size"
-                (ngModelChange)="updateWidgetSize(widget.id, $event)"
-              >
-                @for (sizeOption of sizeOptions; track sizeOption.value) {
-                  <option
-                    [value]="sizeOption.value"
-                    [disabled]="!widget.allowedSizes.includes(sizeOption.value)"
-                  >
-                    {{ sizeOption.label }}
-                  </option>
-                }
-              </select>
-              <button type="button" (click)="removeWidget(widget.id)">Remove</button>
-            </div>
-          }
-        </header>
+        @if (isEditMode) {
+          <div class="widget-menu-container" (click)="$event.stopPropagation()">
+            <button
+              type="button"
+              class="widget-menu-trigger"
+              aria-label="Open widget actions"
+              aria-haspopup="menu"
+              [attr.aria-expanded]="isWidgetMenuOpen(widget.id)"
+              (click)="toggleWidgetMenu(widget.id, $event)"
+            >
+              ⋯
+            </button>
+
+            @if (isWidgetMenuOpen(widget.id)) {
+              <div class="widget-edit-menu" role="menu">
+                <label [attr.for]="'size-' + widget.id">Size</label>
+                <select
+                  [id]="'size-' + widget.id"
+                  [ngModel]="widget.size"
+                  (ngModelChange)="updateWidgetSize(widget.id, $event)"
+                >
+                  @for (sizeOption of sizeOptions; track sizeOption.value) {
+                    <option
+                      [value]="sizeOption.value"
+                      [disabled]="!widget.allowedSizes.includes(sizeOption.value)"
+                    >
+                      {{ sizeOption.label }}
+                    </option>
+                  }
+                </select>
+                <button type="button" (click)="removeWidget(widget.id)">Remove</button>
+              </div>
+            }
+          </div>
+        }
         <ng-container *ngComponentOutlet="widget.component"></ng-container>
       </article>
     } @empty {

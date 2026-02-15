@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, CdkDragMove, DragDropModule } from '@angular/cdk/drag-drop';
-import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, SimpleChanges, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DashboardLayoutService } from '../services/dashboard-layout.service';
 import {
@@ -50,6 +50,7 @@ export class DashboardComponent implements OnChanges {
   lastDragBoundsPoint: { x: number; y: number } | null = null;
   dropPreview: DropPreview | null = null;
   dropPreviewStyles: Record<string, string> | null = null;
+  openWidgetMenuId: string | null = null;
   readonly sizeOptions: DashboardWidgetSizeOption[] = DASHBOARD_WIDGET_SIZE_OPTIONS;
   readonly gridColumns = GRID_COLUMNS;
 
@@ -91,6 +92,40 @@ export class DashboardComponent implements OnChanges {
 
   toggleEditMode(): void {
     this.isEditMode = !this.isEditMode;
+
+    if (!this.isEditMode) {
+      this.openWidgetMenuId = null;
+    }
+  }
+
+  toggleWidgetMenu(widgetId: string, event: Event): void {
+    if (!this.isEditMode) {
+      return;
+    }
+
+    event.stopPropagation();
+    this.openWidgetMenuId = this.openWidgetMenuId === widgetId ? null : widgetId;
+  }
+
+  closeWidgetMenu(): void {
+    this.openWidgetMenuId = null;
+  }
+
+  isWidgetMenuOpen(widgetId: string): boolean {
+    return this.openWidgetMenuId === widgetId;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.openWidgetMenuId) {
+      return;
+    }
+
+    const target = event.target as HTMLElement | null;
+
+    if (!target?.closest('.widget-menu-container')) {
+      this.openWidgetMenuId = null;
+    }
   }
 
   addSelectedWidget(): void {
@@ -131,6 +166,7 @@ export class DashboardComponent implements OnChanges {
     }
 
     this.displayedWidgetItems = this.displayedWidgetItems.filter((item) => item.id !== widgetId);
+    this.openWidgetMenuId = this.openWidgetMenuId === widgetId ? null : this.openWidgetMenuId;
     this.persistLayout();
   }
 
@@ -205,6 +241,7 @@ export class DashboardComponent implements OnChanges {
     this.displayedWidgetItems = this.layoutWithPinnedWidget(resizedItems, widgetId);
 
     this.persistLayout();
+    this.openWidgetMenuId = null;
   }
 
   onDragStarted(widgetId: string): void {
@@ -212,6 +249,7 @@ export class DashboardComponent implements OnChanges {
       return;
     }
 
+    this.openWidgetMenuId = null;
     this.activeDragWidgetId = widgetId;
     this.lastDragBoundsPoint = null;
 
