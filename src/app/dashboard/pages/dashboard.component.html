@@ -1,7 +1,7 @@
 <section class="dashboard">
-  <div class="dashboard-header">
+    <div class="dashboard-header">
     
-    <button type="button" (click)="toggleEditMode()">
+    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleEditMode()">
       {{ isEditMode ? 'Done' : 'Edit layout' }}
     </button>
   </div>
@@ -9,13 +9,13 @@
   @if (isEditMode) {
     <div class="dashboard-controls">
       <label for="widget-select">Add widget</label>
-      <select id="widget-select" [(ngModel)]="selectedWidgetId">
+      <select id="widget-select" class="form-select form-select-sm" [(ngModel)]="selectedWidgetId">
         <option value="">Choose a widget...</option>
         @for (widget of availableWidgets(); track widget.id) {
           <option [value]="widget.id">{{ widget.title }}</option>
         }
       </select>
-      <button type="button" (click)="addSelectedWidget()" [disabled]="!selectedWidgetId">Add</button>
+      <button type="button" class="btn btn-sm btn-primary" (click)="addSelectedWidget()" [disabled]="!selectedWidgetId">Add</button>
     </div>
   }
 
@@ -66,7 +66,7 @@
           <div class="widget-menu-container" (click)="$event.stopPropagation()">
             <button
               type="button"
-              class="widget-menu-trigger"
+              class="btn btn-light btn-sm widget-menu-trigger"
               aria-label="Open widget actions"
               aria-haspopup="menu"
               [attr.aria-expanded]="isWidgetMenuOpen(widget.id)"
@@ -79,6 +79,7 @@
               <div class="widget-edit-menu" role="menu">
                 <label [attr.for]="'size-' + widget.id">Size</label>
                 <select
+                  class="form-select form-select-sm"
                   [id]="'size-' + widget.id"
                   [ngModel]="widget.size"
                   (ngModelChange)="updateWidgetSize(widget.id, $event)"
@@ -92,7 +93,7 @@
                     </option>
                   }
                 </select>
-                <button type="button" (click)="removeWidget(widget.id)">Remove</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeWidget(widget.id)">Remove</button>
               </div>
             }
           </div>
