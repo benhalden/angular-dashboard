@@ -1,22 +1,80 @@
 <section class="dashboard">
-    <div class="dashboard-header">
-    
-    <button type="button" class="btn btn-sm btn-outline-primary" (click)="toggleEditMode()">
-      {{ isEditMode ? 'Done' : 'Edit layout' }}
-    </button>
+  <div class="dashboard-header">
+    <div class="dashboard-header-actions">
+      @if (isEditMode) {
+        <div class="add-widget-menu-container" (click)="$event.stopPropagation()">
+          <button
+            type="button"
+            title="Add Widget"
+            class="btn btn-sm btn-light add-widget-menu-trigger"
+            aria-label="Add widget"
+            aria-haspopup="menu"
+            [attr.aria-expanded]="isAddWidgetMenuOpen"
+            aria-controls="add-widget-panel"
+            (click)="toggleAddWidgetMenu($event)"
+          >
+            <i class="bi bi-plus-circle"></i>
+          </button>
+        </div>
+      }
+
+      <button type="button" class="btn btn-sm btn-light" (click)="toggleEditMode()"
+      title="{{ isEditMode ? 'Done Editing' : 'Edit layout' }}">
+        <i *ngIf='!isEditMode' class="bi bi-grid-3x2-gap"></i>
+					<i *ngIf='isEditMode' class="bi bi-grid-3x2-gap-fill"></i>
+      </button>
+    </div>
   </div>
 
   @if (isEditMode) {
-    <div class="dashboard-controls">
-      <label for="widget-select">Add widget</label>
-      <select id="widget-select" class="form-select form-select-sm" [(ngModel)]="selectedWidgetId">
-        <option value="">Choose a widget...</option>
+    <div
+      class="add-widget-panel-backdrop"
+      [class.open]="isAddWidgetMenuOpen"
+      [attr.aria-hidden]="!isAddWidgetMenuOpen"
+      (click)="isAddWidgetMenuOpen = false"
+    ></div>
+
+    <aside
+      id="add-widget-panel"
+      class="add-widget-panel"
+      role="menu"
+      aria-label="Add widgets"
+      [class.open]="isAddWidgetMenuOpen"
+    >
+      <div class="add-widget-panel-header">
+        <h3>Add Widget</h3>
+        <button
+          type="button"
+          class="btn btn-sm btn-light"
+          aria-label="Close add widget panel"
+          (click)="isAddWidgetMenuOpen = false"
+        >
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+
+      <div class="add-widget-panel-body">
         @for (widget of availableWidgets(); track widget.id) {
-          <option [value]="widget.id">{{ widget.title }}</option>
+          <button
+            type="button"
+            class="add-widget-option"
+            (click)="addSelectedWidget(widget.id)"
+          >
+            <img
+              class="add-widget-thumbnail"
+              [src]="widget.thumbnailImageUrl || defaultWidgetThumbnailImageUrl"
+              [alt]="widget.title + ' thumbnail'"
+            />
+            <span class="add-widget-copy">
+              <span class="add-widget-title">{{ widget.title }}</span>
+              <span class="add-widget-description">{{ widget.description || 'Add this widget to the dashboard.' }}</span>
+            </span>
+          </button>
+        } @empty {
+          <p class="add-widget-empty">All widgets are already added.</p>
         }
-      </select>
-      <button type="button" class="btn btn-sm btn-primary" (click)="addSelectedWidget()" [disabled]="!selectedWidgetId">Add</button>
-    </div>
+      </div>
+    </aside>
   }
 
   <div
@@ -102,7 +160,7 @@
       </article>
     } @empty {
       <p class="empty-state">
-        {{ isEditMode ? 'No widgets selected. Add one from the list above.' : 'No widgets are currently displayed.' }}
+        {{ isEditMode ? 'No widgets selected. Use the menu next to Edit layout to add one.' : 'No widgets are currently displayed.' }}
       </p>
     }
   </div>

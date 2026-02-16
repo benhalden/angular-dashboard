@@ -45,6 +45,7 @@ export class DashboardComponent implements OnChanges {
 
   displayedWidgetItems: DashboardWidgetLayoutItem[] = [];
   selectedWidgetId = '';
+  isAddWidgetMenuOpen = false;
   isEditMode = false;
   activeDragWidgetId: string | null = null;
   lastDragBoundsPoint: { x: number; y: number } | null = null;
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnChanges {
   openWidgetMenuId: string | null = null;
   readonly sizeOptions: DashboardWidgetSizeOption[] = DASHBOARD_WIDGET_SIZE_OPTIONS;
   readonly gridColumns = GRID_COLUMNS;
+  readonly defaultWidgetThumbnailImageUrl = 'assets/images/default.png';
 
   private readonly layoutService = inject(DashboardLayoutService);
 
@@ -95,7 +97,17 @@ export class DashboardComponent implements OnChanges {
 
     if (!this.isEditMode) {
       this.openWidgetMenuId = null;
+      this.isAddWidgetMenuOpen = false;
     }
+  }
+
+  toggleAddWidgetMenu(event: Event): void {
+    if (!this.isEditMode) {
+      return;
+    }
+
+    event.stopPropagation();
+    this.isAddWidgetMenuOpen = !this.isAddWidgetMenuOpen;
   }
 
   toggleWidgetMenu(widgetId: string, event: Event): void {
@@ -117,28 +129,31 @@ export class DashboardComponent implements OnChanges {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
-    if (!this.openWidgetMenuId) {
+    if (!this.openWidgetMenuId && !this.isAddWidgetMenuOpen) {
       return;
     }
 
     const target = event.target as HTMLElement | null;
 
-    if (!target?.closest('.widget-menu-container')) {
+    if (!target?.closest('.widget-menu-container') && !target?.closest('.add-widget-menu-container') && !target?.closest('.add-widget-panel')) {
       this.openWidgetMenuId = null;
+      this.isAddWidgetMenuOpen = false;
     }
   }
 
-  addSelectedWidget(): void {
+  addSelectedWidget(widgetId?: string): void {
     if (!this.isEditMode) {
       return;
     }
 
-    if (!this.selectedWidgetId) {
+    const nextWidgetId = widgetId ?? this.selectedWidgetId;
+
+    if (!nextWidgetId) {
       return;
     }
 
-    const isAlreadyDisplayed = this.displayedWidgetItems.some((item) => item.id === this.selectedWidgetId);
-    const definition = this.widgetDefinitions.find((widget) => widget.id === this.selectedWidgetId);
+    const isAlreadyDisplayed = this.displayedWidgetItems.some((item) => item.id === nextWidgetId);
+    const definition = this.widgetDefinitions.find((widget) => widget.id === nextWidgetId);
 
     if (!isAlreadyDisplayed && definition) {
       const size = this.defaultSizeForWidget(definition);
@@ -147,7 +162,7 @@ export class DashboardComponent implements OnChanges {
       this.displayedWidgetItems = [
         ...this.displayedWidgetItems,
         {
-          id: this.selectedWidgetId,
+          id: nextWidgetId,
           size,
           column: position.column,
           row: position.row
@@ -158,6 +173,10 @@ export class DashboardComponent implements OnChanges {
     }
 
     this.selectedWidgetId = '';
+
+    if (!this.availableWidgets().length) {
+      this.isAddWidgetMenuOpen = false;
+    }
   }
 
   removeWidget(widgetId: string): void {

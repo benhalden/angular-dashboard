@@ -12,6 +12,8 @@ export class DashboardWidgetDefinitionsService {
     {
       id: 'widget-1',
       title: 'Widget 1',
+      description: 'Example dashboard widget 1.',
+      thumbnailImageUrl: 'assets/images/default.png',
       component: Widget1Component,
       defaultSize: '4x3',
       allowedSizes: ['4x3']
@@ -19,6 +21,8 @@ export class DashboardWidgetDefinitionsService {
     {
       id: 'widget-2',
       title: 'Widget 2',
+      description: 'Example dashboard widget 2.',
+      thumbnailImageUrl: 'assets/images/default.png',
       component: Widget2Component,
       defaultSize: '2x1',
       allowedSizes: ['2x1', '2x2', '4x3']
@@ -26,11 +30,12 @@ export class DashboardWidgetDefinitionsService {
     {
       id: 'widget-3',
       title: 'Widget 3',
+      description: 'Example dashboard widget 3.',
+      thumbnailImageUrl: 'assets/images/default.png',
       component: Widget3Component,
       defaultSize: '1x1',
       allowedSizes: ['1x1', '2x1', '2x2']
     }
   ];
 
-  readonly initialWidgetIds: string[] = ['summary', 'activity'];
 }
