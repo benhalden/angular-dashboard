@@ -7,16 +7,6 @@ export interface DashboardWidgetSizeOption {
   label: string;
 }
 
-export const DASHBOARD_WIDGET_SIZE_OPTIONS: DashboardWidgetSizeOption[] = [
-  { value: '1x1', label: 'Small (1x1)' },
-  { value: '2x1', label: 'Small Wide (2x1)' },
-  { value: '2x2', label: 'Medium (2x2)' },
-  { value: '3x2', label: 'Medium Wide (3x2)' },
-  { value: '3x3', label: 'Large Square (3x3)' },
-  { value: '4x3', label: 'Large (4x3)' },
-  { value: '5x4', label: 'Extra Large (5x4 )' }
-];
-
 export interface DashboardWidgetLayoutItem {
   id: string;
   size: DashboardWidgetSize;
@@ -29,7 +19,9 @@ export interface DashboardWidgetDefinition {
   title: string;
   description?: string;
   component: Type<unknown>;
-  defaultSize?: DashboardWidgetSize;
-  allowedSizes?: DashboardWidgetSize[];
+  defaultWidth: number;
+  defaultHeight: number;
+  allowedWidths?: number[];
+  allowedHeights?: number[];  
   thumbnailImageUrl?: string;
 }

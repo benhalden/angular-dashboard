@@ -4,7 +4,7 @@ import { Component, ElementRef, HostListener, Input, OnChanges, SimpleChanges, V
 import { FormsModule } from '@angular/forms';
 import { DashboardLayoutService } from '../services/dashboard-layout.service';
 import {
-  DASHBOARD_WIDGET_SIZE_OPTIONS,
+  
   DashboardWidgetDefinition,
   DashboardWidgetLayoutItem,
   DashboardWidgetSize
@@ -437,10 +437,8 @@ export class DashboardComponent implements OnChanges {
     if (allowedWidths.length) {
       return allowedWidths;
     }
+    return [1, 2, 3, 4, 5];
 
-    return this.sanitizedDimensions(
-      DASHBOARD_WIDGET_SIZE_OPTIONS.map((option) => this.gridColumnSpan(option.value))
-    );
   }
 
   private allowedHeightsForWidget(widget: DashboardWidgetDefinition): number[] {
@@ -450,9 +448,8 @@ export class DashboardComponent implements OnChanges {
       return allowedHeights;
     }
 
-    return this.sanitizedDimensions(
-      DASHBOARD_WIDGET_SIZE_OPTIONS.map((option) => this.gridRowSpan(option.value))
-    );
+    return [1, 2, 3, 4, 5];
+
   }
 
   private defaultSizeForWidget(widget: DashboardWidgetDefinition): DashboardWidgetSize {

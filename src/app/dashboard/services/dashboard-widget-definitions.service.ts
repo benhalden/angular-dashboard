@@ -14,9 +14,11 @@ export class DashboardWidgetDefinitionsService {
       title: 'Widget 1',
       description: 'Example dashboard widget 1.',
       thumbnailImageUrl: 'assets/images/default.png',
-      component: Widget1Component,
-      defaultSize: '4x3',
-      allowedSizes: ['4x3']
+      component: Widget1Component,      
+      defaultWidth: 4,
+      defaultHeight: 3,
+      allowedWidths: [4,8],
+      allowedHeights: [3]
     },
     {
       id: 'widget-2',
@@ -24,8 +26,10 @@ export class DashboardWidgetDefinitionsService {
       description: 'Example dashboard widget 2.',
       thumbnailImageUrl: 'assets/images/default.png',
       component: Widget2Component,
-      defaultSize: '2x1',
-      allowedSizes: ['2x1', '2x2', '4x3']
+      defaultWidth: 2,
+      defaultHeight: 1,
+      allowedWidths: [2, 4],
+      allowedHeights: [1, 2, 3]
     },
     {
       id: 'widget-3',
@@ -33,8 +37,10 @@ export class DashboardWidgetDefinitionsService {
       description: 'Example dashboard widget 3.',
       thumbnailImageUrl: 'assets/images/default.png',
       component: Widget3Component,
-      defaultSize: '1x1',
-      allowedSizes: ['1x1', '2x1', '2x2']
+      defaultWidth: 2,
+      defaultHeight: 2,
+      allowedWidths: [1, 2],
+      allowedHeights: [1, 2]
     }
   ];
 
